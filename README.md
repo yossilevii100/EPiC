@@ -3,8 +3,7 @@ Official pytorch implementation of the paper ["EPiC: Ensemble of Partial Point C
 
 Meir Yossef Levi, Guy Gilboa
 
-![alt text](http://url/to/img.png)
-<img src=".misc/teaser.png" width=1000>
+<img src="./misc/teaser.png" width=1000>
 
 We propose a novel approach to robustify performance of point-cloud classification networks against corruptions and outliers. 
 Our method is based on ensemble of 3 types of sub-samples: Patches, Curves and Random. It can be applied to any given point-cloud network and achieve state-of-the-art results on [[ModelNet-C]](https://github.com/jiawei-ren/ModelNet-C) by using RPC+WolfMix (mCE=0.501).
