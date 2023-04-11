@@ -86,14 +86,16 @@ def extract_patches(pc, anchor, patch_size):
     return patch
 
 
-def extract_random(pc, k):
-    # extract k random points from point-cloud
-    # input -
-    # pc: Bx3xN
-    # k: int
-    # output -
-    # random_ppc: Bx3xK
+def extract_random(pc: torch.Tensor, k: int) -> torch.Tensor:
+    """Extracts K random points from point-cloud
+    Parameters:
+    pc (torch.Tensor): (B,3,N) point cloud
+    k (int): number of random points to be fetched
 
+    Returns:
+    random_ppc (torch.Tensor): (B,3,K) random fetched point-cloud
+
+   """
     # choose K random indices
     indices = torch.randperm(pc.shape[-1])
     random_indices = indices[:k]

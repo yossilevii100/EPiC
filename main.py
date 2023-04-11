@@ -517,17 +517,18 @@ def test(args):
                                      batch_size=args.test_batch_size, shuffle=False, drop_last=False)
             test_true = []
             test_pred = []
-
             set_fixed_seed(args)
 
-            for ii, (data, label) in enumerate(test_loader):
-                data, label = data.to(device), label.to(device).squeeze()
-                data = data.permute(0, 2, 1)
-                anchors = farthest_point_sample(data.transpose(1, 2), args.k_tilde)
+            for data, label in test_loader:
+                data, label = data.to(device), label.to(device).squeeze()  # TODO: #B,
+                data = data.permute(0, 2, 1)  # TODO:B,3,N
+                anchors = farthest_point_sample(data.transpose(1, 2), args.k_tilde)  # TODO: (B,k_tilde)
                 for cur_ppc in range(args.k_tilde):
-                    random_ppc = extract_random(data, args.nr)
-                    patches_ppc = extract_patches(data, anchors[:, [cur_ppc]], args.np)
-                    curves_ppc = extract_curves(data, anchors[:, [cur_ppc]], args.m, args.nc)
+                    random_ppc = extract_random(data, args.nr)  # B,3,nr Global partial point-cloud
+                    patches_ppc = extract_patches(data, anchors[:, [cur_ppc]],
+                                                  args.np)  # B,3,np Local partial point-cloud
+                    curves_ppc = extract_curves(data, anchors[:, [cur_ppc]], args.m,
+                                                args.nc)  # B,3,nc Local partial point-cloud
                     logits_random = model_random(random_ppc)
                     logits_patches = model_patches(patches_ppc)
                     logits_curves = model_curves(curves_ppc)

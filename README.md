@@ -3,7 +3,7 @@ Official pytorch implementation of the paper ["EPiC: Ensemble of Partial Point C
 
 Meir Yossef Levi, Guy Gilboa
 
-<img src="./misc/teaser.png" width=1000>
+<img src="./misc/teaser.png" width=600>
 
 We propose a novel approach to robustify performance of point-cloud classification networks against corruptions and outliers. 
 Our method is based on ensemble of 3 types of sub-samples: Patches, Curves and Random. It can be applied to any given point-cloud network and achieve state-of-the-art results on [[ModelNet-C]](https://github.com/jiawei-ren/ModelNet-C) by using RPC+WolfMix (mCE=0.501).
@@ -13,7 +13,7 @@ Our method is based on ensemble of 3 types of sub-samples: Patches, Curves and R
 ### Step 0. Clone the Repo
 ```shell
 git clone https://github.com/yossilevii100/EPiC.git
-cd ModelNet-C
+cd EPiC
 ```
 
 ### Step 1. Set Up the Environment
@@ -58,8 +58,8 @@ data
 ### Step 3. Download Pretrained Models
 Download pretrained models by
 ```shell
-gdown https://drive.google.com/uc?id=11RONLZGg0ezxC16n57PiEZouqC5L0b_h
-unzip pretrained_models.zip
+gdown https://drive.google.com/drive/folders/1dY_C7-6zf8sjho0HMLQz93GGLvlTMTuj?usp=sharing
+unzip pretrained.zip
 ```
 Alternatively, you may download [pretrained models](https://drive.google.com/file/d/11RONLZGg0ezxC16n57PiEZouqC5L0b_h/view?usp=sharing) manually and extract it under root directory.
 
