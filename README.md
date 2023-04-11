@@ -6,7 +6,7 @@ Meir Yossef Levi, Guy Gilboa
 <img src="./misc/teaser.png" width=600>
 
 We propose a novel approach to robustify performance of point-cloud classification networks against corruptions and outliers. 
-Our method is based on ensemble of 3 types of sub-samples: Patches, Curves and Random. It can be applied to any given point-cloud network and achieve state-of-the-art results on [[ModelNet-C]](https://github.com/jiawei-ren/ModelNet-C) by using RPC+WolfMix (mCE=0.501).
+Our method is based on ensemble of 3 types of sub-samples: Patches, Curves and Random. It can be applied to any given point-cloud network and achieve state-of-the-art results on [ModelNet-C](https://github.com/jiawei-ren/ModelNet-C) by using RPC+WolfMix (mCE=0.501).
 
 ## Get Started
 
@@ -19,10 +19,8 @@ cd EPiC
 ### Step 1. Set Up the Environment
 Set up the environment by:
 ```shell
-conda create --name modelnetc python=3.7.5
-conda activate modelnetc
 pip install -r requirements.txt
-cd SimpleView/pointnet2_pyt && pip install -e . && cd -
+cd pointnet2_ops_lib && pip install -e . && cd ..
 pip install -e modelnetc_utils
 ```
 
@@ -58,10 +56,10 @@ data
 ### Step 3. Download Pretrained Models
 Download pretrained models by
 ```shell
-gdown https://drive.google.com/drive/folders/1dY_C7-6zf8sjho0HMLQz93GGLvlTMTuj?usp=sharing
-unzip pretrained.zip
+gdown https://drive.google.com/uc?id=15Q-YewNGvte8PmteVjTmqE0vzDL3ViJd
+unzip pretrained.zip -d pretrained
 ```
-Alternatively, you may download [pretrained models](https://drive.google.com/file/d/11RONLZGg0ezxC16n57PiEZouqC5L0b_h/view?usp=sharing) manually and extract it under root directory.
+Alternatively, you may download [pretrained models](https://drive.google.com/uc?id=15Q-YewNGvte8PmteVjTmqE0vzDL3ViJd) manually and extract it under root directory.
 
 ### Evaluation Commands
 Evaluation commands are provided in [EVALUATE.md](EVALUATE.md).

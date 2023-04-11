@@ -541,6 +541,7 @@ def test(args):
                         tot_pred_patches = torch.cat((tot_pred_patches, logits_patches.unsqueeze(-2)), dim=-2)  # BxTxC
                         tot_pred_random = torch.cat((tot_pred_random, logits_random.unsqueeze(-2)), dim=-2)  # BxTxC
 
+                # TODO: change this if-else to torch.cat([large list of logits])
                 tot_pred = torch.cat((tot_pred_curves, tot_pred_patches, tot_pred_random), dim=-2)
                 logits = torch.mean(tot_pred, dim=-2)
 
