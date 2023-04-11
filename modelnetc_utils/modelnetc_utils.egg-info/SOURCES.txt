@@ -1,0 +1,9 @@
+README.md
+setup.py
+modelnetc_utils/__init__.py
+modelnetc_utils/dataset.py
+modelnetc_utils/eval.py
+modelnetc_utils.egg-info/PKG-INFO
+modelnetc_utils.egg-info/SOURCES.txt
+modelnetc_utils.egg-info/dependency_links.txt
+modelnetc_utils.egg-info/top_level.txt
