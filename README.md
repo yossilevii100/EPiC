@@ -20,8 +20,9 @@ cd EPiC
 Set up the environment by:
 ```shell
 pip install -r requirements.txt
-cd pointnet2_ops_lib
-python setup.py build
+cd pointnet2
+pip install -e .
+pip install pointnet2_ops_lib/.
 cd ..
 pip install -e modelnetc_utils
 ```
