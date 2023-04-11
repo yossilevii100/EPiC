@@ -9,7 +9,7 @@ import re
 import sys
 import threading
 import traceback
-from torch._six import string_classes
+string_classes = str
 int_classes = int
 
 
