@@ -8,6 +8,9 @@ Meir Yossef Levi, Guy Gilboa
 We propose a novel approach to robustify performance of point-cloud classification networks against corruptions and outliers. 
 Our method is based on ensemble of 3 types of sub-samples: Patches, Curves and Random. It can be applied to any given point-cloud network and achieve state-of-the-art results on [ModelNet-C](https://github.com/jiawei-ren/ModelNet-C) by using RPC+WolfMix (mCE=0.501).
 
+
+## EPiC notebook:
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/gist/yossilevii100/ce4cae6c26e7c3d3358c4fb7dda3bec4/untitled5.ipynb)
 ## Get Started
 
 ### Step 0. Clone the Repo
@@ -20,7 +23,6 @@ cd EPiC
 Set up the environment by:
 ```shell
 pip install pointnet2_ops_lib/.
-pip install -e modelnetc_utils
 ```
 
 ### Step 2. Prepare Data
@@ -29,7 +31,8 @@ Download ModelNet-40 by:
 ```shell
 cd data
 wget https://shapenet.cs.stanford.edu/media/modelnet40_ply_hdf5_2048.zip
-unzip modelnet40_ply_hdf5_2048.zip && cd ..
+unzip modelnet40_ply_hdf5_2048.zip
+cd ..
 ```
 
 Alternatively, you may download [ModelNet40](https://shapenet.cs.stanford.edu/media/modelnet40_ply_hdf5_2048.zip) manually and extract it under `data`.
@@ -38,7 +41,8 @@ Download ModelNet-C by:
 ```shell
 cd data
 gdown https://drive.google.com/uc?id=1KE6MmXMtfu_mgxg4qLPdEwVD5As8B0rm
-unzip modelnet_c.zip && cd ..
+unzip modelnet_c.zip
+cd ..
 ```
 Alternatively, you may download [ModelNet40-C](https://drive.google.com/file/d/1KE6MmXMtfu_mgxg4qLPdEwVD5As8B0rm/view?usp=sharing) manually and extract it under `data`.
 
