@@ -10,7 +10,7 @@ import torch.nn.functional as F
 
 
 def cal_loss(pred, gold, smoothing=True):
-    ''' Calculate cross entropy loss, apply label smoothing if needed. '''
+    """ Calculate cross entropy loss, apply label smoothing if needed. """
 
     gold = gold.contiguous().view(-1)
 
@@ -55,14 +55,16 @@ def get_knn(x, k):
 
 
 def extract_patches(pc, anchor, patch_size):
-    # extract patch starting from anchor with a size of patch_size
-    # input -
-    # pc: Bx3xN
-    # anchor: Bx1
-    # patch_size: int
-    # output -
-    # patch: Bx3xK -> K is min(patch_size, N)
+    """extract patch starting from anchor with a size of patch_size
+    Parameters:
+    pc (torch.Tensor): (B,3,N) point cloud
+    anchor (torch.Tensor): (B,1) anchor index per sample in batch
+    patch_size (int): number of points in the patch
 
+    Returns:
+    patch (torch.Tensor): (B,3,k) patch per sample in batch -> k is min(patch_size, N)
+
+   """
     B, num_dims, N = pc.shape
 
     # in case patch_size is larger than N, the entire point-cloud is considered as the patch
@@ -106,14 +108,17 @@ def extract_random(pc: torch.Tensor, k: int) -> torch.Tensor:
 
 
 def extract_curves(pc, anchor, m, curve_size):
-    # extract curve starting from anchor with a size of curve_size, at each iteration choose randomly one of m nearest neighbors
-    # input -
-    # pc: Bx3xN
-    # anchor: Bx1
-    # m: int -> number of neighbors to choose from
-    # curve_size: int
-    # output -
-    # curve: Bx3xK
+    """extract curve starting from anchor with a size of curve_size, at each iteration choose randomly one of m nearest neighbors
+    Parameters:
+    pc (torch.Tensor): (B,3,N) point cloud
+    anchor (torch.Tensor): (B,1) anchor index per sample in batch
+    m (int): number of neighbors to choose from at each iteration
+    curve_size (int): number of points in the curve
+
+    Returns:
+    curve (torch.Tensor): (B,3,k) curve per sample in batch -> k is min(curve_size, N)
+
+   """
 
     B, num_dims, N = pc.shape
     actual_curve_size = min(curve_size, N)
