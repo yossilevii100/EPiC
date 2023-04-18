@@ -8,7 +8,8 @@ Meir Yossef Levi, Guy Gilboa
 We propose a novel approach to robustify performance of point-cloud classification networks against corruptions and outliers. 
 Our method is based on ensemble of 3 types of sub-samples: Patches, Curves and Random. It can be applied to any given point-cloud network and achieve state-of-the-art results on [ModelNet-C](https://github.com/jiawei-ren/ModelNet-C) by using RPC+WolfMix (mCE=0.501).
 
-
+----
+Tested on Ubuntu 20.04 LTS using python 3.8.10 
 ## EPiC notebook:
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/gist/yossilevii100/ce4cae6c26e7c3d3358c4fb7dda3bec4/untitled5.ipynb)
 ## Get Started
