@@ -1,4 +1,7 @@
 # EPiC: Ensemble of Partial Point Clouds for Robust Classification
+	
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/epic-ensemble-of-partial-point-clouds-for/point-cloud-classification-on-pointcloud-c)](https://paperswithcode.com/sota/point-cloud-classification-on-pointcloud-c?p=epic-ensemble-of-partial-point-clouds-for)
+
 Official pytorch implementation of the paper ["EPiC: Ensemble of Partial Point Clouds for Robust Classification"](https://arxiv.org/abs/2303.11419).
 
 Meir Yossef Levi, Guy Gilboa
