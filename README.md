@@ -1,4 +1,4 @@
-# EPiC: Ensemble of Partial Point Clouds for Robust Classification
+# EPiC: Ensemble of Partial Point Clouds for Robust Classification (ICCV 2023)
 	
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/epic-ensemble-of-partial-point-clouds-for/point-cloud-classification-on-pointcloud-c)](https://paperswithcode.com/sota/point-cloud-classification-on-pointcloud-c?p=epic-ensemble-of-partial-point-clouds-for)
 
