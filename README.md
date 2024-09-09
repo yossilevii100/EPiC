@@ -141,12 +141,12 @@ Without WolfMix Augmentation
 
 ## Cite EPiC
 ```bibtex
-@article{
-    epic
-    title={EPiC: Ensemble of Partial Point Clouds for Robust Classification.},
-    author={Levi Meir Yossef and Guy Gilboa},
-    journal={arXiv:2303.11419},
-    year={2023},
+@inproceedings{levi2023epic,
+  title={Epic: Ensemble of partial point clouds for robust classification},
+  author={Levi, Meir Yossef and Gilboa, Guy},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={14475--14484},
+  year={2023}
 }
 ```
 
