@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="EPiC: Ensemble of Partial Point Clouds for Robust Classification — ICCV 2023 paper by Meir Yossef Levi &amp; Guy Gilboa" />
+  <title>EPiC: Ensemble of Partial Point Clouds for Robust Classification</title>
+
+  <!-- Fonts and Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/ad96f96272.js" crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --accent:#a259ff;
+      --accent-dark:#6f2da8;
+      --bg:#fafafa;
+      --card-bg:linear-gradient(145deg,#ffffff,#f2f0ff);
+    }
+    html,body { height:100%; }
+    body {
+      font-family:'Roboto',sans-serif;
+      background:var(--bg);
+      color:#222;
+      margin:0;
+      padding-top:70px;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    h1,h2,h3{ font-family:'Poppins',sans-serif; margin:0; }
+    a { color:#4b0082; text-decoration:none; position:relative; transition:0.24s; }
+    a:hover { color:var(--accent); }
+    a::after { content:''; position:absolute; width:0; height:2px; bottom:-2px; left:0; background-color:var(--accent); transition:width 0.25s ease-in-out; }
+    a:hover::after{ width:100%; }
+
+    .topnav {
+      position:fixed; top:0; left:0; right:0;
+      background:var(--accent);
+      display:flex; justify-content:center; gap:6px;
+      z-index:1000;
+      box-shadow:0 4px 6px rgba(0,0,0,0.1);
+      padding:10px 10px;
+      align-items:center;
+    }
+    .topnav a { color:white; padding:8px 14px; text-align:center; font-weight:600; font-size:0.98rem; border-radius:6px; }
+    .topnav a:hover { background:rgba(255,255,255,0.12); }
+
+    section {
+      width:100%;
+      padding:48px 5%;
+      margin:20px 0;
+      border-radius:20px;
+      box-shadow:0 10px 20px rgba(162,89,255,0.12);
+      transition:transform 0.25s, box-shadow 0.25s;
+      background:var(--card-bg);
+    }
+    section:hover { transform:translateY(-6px); box-shadow:0 20px 40px rgba(162,89,255,0.18); }
+    .section-content { max-width:1000px; margin:0 auto; }
+
+    h1 { font-size:2.6rem; font-weight:800; text-align:center; color:var(--accent); line-height:1.05; }
+    h2 { font-size:1.8rem; color:#4b0082; margin-bottom:14px; text-align:center; }
+    p, li { font-size:1.05rem; line-height:1.6; color:#333; margin:0 0 12px 0; }
+
+    .authors-container { display:flex; justify-content:center; gap:28px; margin-top:14px; flex-wrap:wrap; align-items:center; }
+    .author { display:flex; flex-direction:column; align-items:center; transition:transform 0.2s; }
+    .author a { margin-top:6px; color:#2b1b6a; font-weight:600; font-size:0.97rem; }
+    .author img { width:68px; height:68px; border-radius:50%; object-fit:cover; margin-bottom:6px; transition:transform 0.25s, box-shadow 0.25s; cursor:pointer; box-shadow:0 6px 12px rgba(0,0,0,0.06); }
+    .author:hover img { transform:scale(1.08); }
+    .vertical-line { border-left:2px solid var(--accent); height:70px; margin:0 28px; align-self:center; }
+
+    .btn-row { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:10px; margin-top:16px; }
+    .btn-custom {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 14px;
+      background:var(--accent);
+      color:#fff; border:none; border-radius:9px;
+      font-weight:600; transition:0.18s; cursor:pointer; text-decoration:none;
+    }
+    .btn-custom img { height:18px; width:auto; display:block; }
+    .btn-custom i { font-size:14px; }
+    .btn-custom:hover { background:var(--accent-dark); transform:translateY(-2px); }
+
+    .abstract-container { display:flex; gap:18px; align-items:stretch; justify-content:center; flex-wrap:wrap; margin-top:8px; }
+    .abstract-text, .abstract-teaser-wrapper { flex:1 1 45%; min-width:280px; display:flex; flex-direction:column; }
+    .abstract-teaser-wrapper img { object-fit:contain; width:100%; max-width:420px; cursor:pointer; border-radius:14px; margin:auto; display:block; }
+    @media (max-width:900px) { .abstract-text, .abstract-teaser-wrapper { flex:1 1 100%; } }
+
+    .insights-container { display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start; justify-content:center; margin-top:8px; }
+    .insights-grid {
+	  flex: 1 1 80%;
+	  display: grid;
+	  grid-template-columns: repeat(2, 1fr); /* 2 columns for 2x2 layout */
+	  gap: 18px;
+	}
+
+	@media (max-width: 700px) {
+	  .insights-grid {
+		grid-template-columns: 1fr; /* stack vertically on small screens */
+	  }
+	}
+	/* Key Insight Card Styles */
+.card-insight {
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fff, #f0f0f5);
+  box-shadow: 0 8px 22px rgba(162, 89, 255, 0.12);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.card-insight:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 40px rgba(162, 89, 255, 0.2);
+}
+
+/* Header on top */
+.card-insight .upper {
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+.card-insight .upper h3 {
+  color: var(--accent);
+  margin: 0 0 12px 0;
+}
+
+/* Bottom container - left image, right text */
+.card-insight .bottom {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;  /* align top */
+  justify-content: center;
+  flex-wrap: wrap;          /* only wrap on small screens */
+}
+
+.card-insight .bottom .left {
+  flex: 0 0 45%;             /* fixed half width */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.card-insight .bottom .left img {
+  height: 100%;              /* fill full height of left cell */
+  width: auto;               /* maintain aspect ratio */
+  object-fit: contain;
+  border-radius: 14px;
+  transition: transform 0.35s ease;
+  transform: scale(0.6);     /* start at 60% */
+}
+
+/* scale image when hovering anywhere on the card */
+.card-insight:hover .bottom .left img {
+  transform: scale(1);       /* grow to 100% */
+}
+
+.card-insight .bottom .right {
+  flex: 0 0 45%;             /* take remaining half */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+@media (max-width:900px) {
+  .card-insight .bottom .left,
+  .card-insight .bottom .right {
+    flex: 1 1 100%;          /* wrap on small screens */
+  }
+}
+ cursor:default; transition:transform 0.18s, box-shadow 0.18s; }
+    .card-insight:hover { transform:translateY(-6px); box-shadow:0 18px 36px rgba(162,89,255,0.16); }
+    .card-insight h3 { color:var(--accent); margin-bottom:8px; }
+
+    .poster { width:100%; max-width:1000px; border-radius:14px; box-shadow:0 8px 28px rgba(162,89,255,0.12); margin:18px 0; display:block; margin-left:auto; margin-right:auto; }
+    iframe { border-radius:14px; max-width:100%; width:100%; height:450px; box-shadow:0 8px 28px rgba(162,89,255,0.12); margin-top:20px; display:block; margin-left:auto; margin-right:auto; }
+    pre { background:#eaeaea; padding:16px; border-radius:12px; overflow-x:auto; color:#222; }
+
+    footer { text-align:center; padding:44px 20px; font-size:0.95rem; color:#555; }
+
+    /* Modal (image fullscreen) */
+    .modal { display:none; position:fixed; z-index:10000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color: rgba(0,0,0,0.9); }
+    .modal-inner { position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; }
+    .modal-content { max-width:92%; max-height:92%; border-radius:12px; box-shadow:0 18px 40px rgba(0,0,0,0.6); transform-origin:center center; transition:transform 0.12s; }
+    .close { position:absolute; top:18px; right:24px; color:#fff; font-size:36px; font-weight:bold; transition:0.18s; cursor:pointer; }
+    .close:hover { color:#bbb; }
+
+	/* Hero video styles */
+	.hero-video-wrapper {
+	  margin-top: 12px;       /* a bit smaller top margin */
+	  display: flex;
+	  justify-content: center;
+	}
+
+	.hero-video-inner {
+	  position: relative;
+	  width: 100%;
+	  max-width: 450px;       /* smaller than before */
+	  border-radius: 12px;
+	  overflow: hidden;
+	  box-shadow: 0 8px 24px rgba(162,89,255,0.12);
+	}
+
+	video#hero-video {
+	  display: block;
+	  width: 100%;
+	  height: auto;
+	  cursor: pointer;
+	  background: #000;
+	  outline: none;
+	}
+
+	/* Responsive for small screens */
+	@media (max-width:600px) {
+	  .hero-video-inner { max-width: 90%; }
+	}
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <div class="topnav" role="navigation" aria-label="Main navigation">
+    <a href="#hero" aria-label="Go to home">Home</a>
+    <a href="#abstract" aria-label="Go to abstract">Abstract</a>
+    <a href="#insights" aria-label="Go to key insights">Key Insights</a>
+	<a href="#presentation" aria-label="Open presentation">Presentation</a>
+    <a href="#followup" aria-label="Open follow-up paper">Follow-up</a>
+    <a href="#bibtex" aria-label="Open BibTeX">BibTeX</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section id="hero" aria-label="Hero section">
+    <div class="section-content">
+      <h1>EPiC: Ensemble of Partial Point Clouds for Robust Classification</h1>
+      <h2>ICCV 2023</h2>
+
+      <!-- Author portraits -->
+      <div class="authors-container" aria-hidden="false">
+        <div class="author">
+          <a href="https://yossilevii100.github.io" aria-label="Meir Yossef Levi personal page">
+            <img src="https://raw.githubusercontent.com/yossilevii100/double-ellipsoid-clip/main/misc/yossi.jfif" alt="Meir Yossef Levi portrait">
+          </a>
+          <a href="https://yossilevii100.github.io">Meir Yossef Levi</a>
+        </div>
+        <div class="author">
+          <a href="https://guygilboa.net.technion.ac.il/" aria-label="Guy Gilboa personal page">
+            <img src="https://raw.githubusercontent.com/yossilevii100/double-ellipsoid-clip/main/misc/guy.png" alt="Guy Gilboa portrait">
+          </a>
+          <a href="https://guygilboa.net.technion.ac.il/">Guy Gilboa</a>
+        </div>
+        <div class="vertical-line" aria-hidden="true"></div>
+        <div class="author">
+          <a href="https://www.technion.ac.il/en/" aria-label="Technion website">
+            <img src="https://raw.githubusercontent.com/yossilevii100/double-ellipsoid-clip/main/misc/technion.png" alt="Technion logo" style="background:black;">
+          </a>
+          <a href="https://www.technion.ac.il/en/">Technion</a>
+        </div>
+      </div>
+	  
+	  <!-- Hero Video -->
+		<!-- <div class="hero-video-wrapper" aria-hidden="false">
+		  <div class="hero-video-inner" id="hero-video-inner">
+			<video id="hero-video"
+				   src="https://raw.githubusercontent.com/yossilevii100/double-ellipsoid-clip/main/misc/double_ellipsoid.mp4"
+				   muted playsinline preload="metadata" aria-label="Short demonstration video"></video>
+		  </div>
+		</div> -->
+		
+	<!-- Aligned buttons row -->
+	<div class="btn-row" role="toolbar" aria-label="Primary links">
+	  <a class="btn-custom" href="https://arxiv.org/abs/2303.11419" target="_blank" rel="noopener" aria-label="Open arXiv paper">
+		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/ArXiv_logo_2022.svg/512px-ArXiv_logo_2022.svg.png" alt="ArXiv logo"> ArXiv
+	  </a>
+	  <a class="btn-custom" href="https://github.com/yossilevii100/EPiC" target="_blank" rel="noopener" aria-label="Open code on GitHub">
+		<i class="fab fa-github" aria-hidden="true"></i> Code
+	  </a>
+	  <a class="btn-custom" href="https://www.youtube.com/watch?v=wLGXtf2GpAY" target="_blank" rel="noopener" aria-label="Watch presentation on YouTube">
+		<i class="fas fa-video" aria-hidden="true"></i> Presentation
+	  </a>
+	  <a class="btn-custom" href="https://colab.research.google.com/gist/yossilevii100/ce4cae6c26e7c3d3358c4fb7dda3bec4/untitled5.ipynb" target="_blank" rel="noopener" aria-label="Open in Google Colab">
+		<img src="https://colab.research.google.com/img/colab_favicon_256px.png" alt="Google Colab logo" style="height:18px; vertical-align:middle; margin-right:6px;"> Demo
+	  </a>
+	</div>
+
+
+  </section>
+
+  <!-- Abstract + Teaser Section -->
+  <section id="abstract" aria-label="Abstract section">
+    <div class="section-content">
+      <h2 style="text-align:center; margin-bottom:18px;">Abstract</h2>
+      <div class="abstract-container">
+        <div class="abstract-text">
+          <p>
+            Point-cloud networks struggle with robustness under partiality and noise. We introduce EPiC, an ensemble method where each classifier operates on a different partial sampling—patches, curves, or random subsets—yielding diverse yet complementary predictions. This diversity acts as a consensus filter against corruptions, significantly improving robustness on ModelNet-C. EPiC achieves state-of-the-art mCE scores while remaining lightweight, backbone-agnostic, and easy to deploy.
+          </p>
+        </div>
+        <div class="abstract-teaser-wrapper">
+          <img id="abstract-teaser" src="https://raw.githubusercontent.com/yossilevii100/EPiC/main/misc/teaser.png" alt="Teaser poster for the EPiC Paper">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal for image fullscreen -->
+  <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-inner" id="modal-inner">
+      <button class="close" id="modal-close" aria-label="Close image">&times;</button>
+      <img class="modal-content" id="modal-img" src="" alt="Expanded poster view">
+    </div>
+  </div>
+
+  <!-- Key Insights Section -->
+<section id="insights" aria-label="Key insights">
+  <div class="section-content">
+    <h2>Key Insights</h2>
+    <div class="insights-container">
+      <div class="insights-grid" role="list">
+        
+        <div class="card-insight">
+          <div class="upper">
+            <h3>Partial-Input Ensembles</h3>
+          </div>
+          <div class="bottom">
+            <div class="left">
+              <img src="https://raw.githubusercontent.com/yossilevii100/epic/main/misc/key_insight_partial.png" alt="Partial Ensemble Insight"
+              style="width:200px; height:200px; border-radius:12px; margin-top:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); align-self:center;">
+            </div>
+            <div class="right">
+              <p>Each classifier sees only a <em>partial view</em> of the point cloud—patches, curves, or random subsets—yielding diverse perspectives on the same object.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-insight">
+          <div class="upper">
+            <h3>Diversity as Robustness</h3>
+          </div>
+          <div class="bottom">
+            <div class="left">
+              <img src="https://raw.githubusercontent.com/yossilevii100/epic/main/misc/key_insight_diversity.png" alt="Diversity Insight"
+              style="width:200px; height:200px; border-radius:12px; margin-top:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); align-self:center;">
+            </div>
+            <div class="right">
+              <p>Diverse errors across partial samplings act like a <em>noise filter</em>: when averaged, they cancel corruptions and preserve true structure.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-insight">
+          <div class="upper">
+            <h3>Consensus Mechanism</h3>
+          </div>
+          <div class="bottom">
+            <div class="left">
+              <img src="https://raw.githubusercontent.com/yossilevii100/epic/main/misc/key_insight_consensus.png" alt="Consensus Insight"
+              style="width:200px; height:200px; border-radius:12px; margin-top:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); align-self:center;">
+            </div>
+            <div class="right">
+              <p>Simple averaging across ensemble members yields strong consensus, suppressing corruption effects without complex training tricks.</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card-insight">
+          <div class="upper">
+            <h3>Practical Benefits</h3>
+          </div>
+          <div class="bottom">
+            <div class="left">
+              <img src="https://raw.githubusercontent.com/yossilevii100/epic/main/misc/key_insight_benefits.png" alt="Benefits Insight"
+              style="width:200px; height:200px; border-radius:12px; margin-top:8px; box-shadow:0 4px 10px rgba(0,0,0,0.08); align-self:center;">
+            </div>
+            <div class="right">
+              <p>EPiC achieves state-of-the-art robustness on ModelNet-C while remaining lightweight, backbone-agnostic, and easy to deploy in practice.</p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+	<section id="presentation" aria-label="Presentation">
+  <div class="section-content">
+    <h2>Presentation</h2>
+    <div class="presentation-container" style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; align-items:flex-start; margin-top:16px;">
+      
+      <!-- Left: 5-minute presentation -->
+      <div class="presentation-item" style="flex:1 1 45%; min-width:280px; display:flex; flex-direction:column;">
+        <h3 style="margin-bottom:12px; color:var(--accent); font-size:1.2rem;">5 minutes presentation</h3>
+        <div style="height:320px; border-radius:12px; overflow:hidden; box-shadow:0 8px 28px rgba(162,89,255,0.12);">
+          <iframe 
+            src="https://www.youtube.com/watch?v=wLGXtf2GpAY" 
+            title="5-minute presentation" 
+            frameborder="0" 
+            allowfullscreen 
+            style="width:100%; height:100%; border:0;">
+          </iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section id="followup" aria-label="Follow-up work">
+  <div class="section-content">
+    <h2>Follow-up Work</h2>
+
+    <div class="followup-container" style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; align-items:flex-start; margin-top:16px;">
+
+      <!-- Left: subheader + teaser image -->
+      <div class="followup-left" style="flex:1 1 45%; min-width:280px; display:flex; flex-direction:column; gap:12px;">
+
+        <!-- Subheader -->
+        <h3 style="margin:0; font-size:1.2rem; font-weight:700; color:var(--accent);">
+          Robustifying Point Cloud Networks by Refocusing
+        </h3>
+
+        <!-- Teaser image -->
+        <div class="followup-poster" style="flex:1; display:flex; justify-content:center; align-items:center;">
+          <img src="https://raw.githubusercontent.com/yossilevii100/double-ellipsoid-clip/main/EPiC/refocusing_teaser.png" 
+               alt="Whitened Poster" 
+               style="width:100%; max-width:420px; border-radius:12px; box-shadow:0 8px 28px rgba(162,89,255,0.12); display:block; margin:auto;">
+        </div>
+		
+		<!-- Description under video -->
+        <div class="followup-desc" style="flex:0 0 auto; background:var(--card-bg); padding:16px; border-radius:12px; box-shadow:0 8px 24px rgba(162,89,255,0.12);">
+          <p>
+            Our follow-up 3dv 2025 paper suggest a more sophisticated sampling scheme based on importance measure, enhanced 3D performance.
+          </p>
+        </div>
+		
+      </div>
+
+    </div>
+
+	<!-- Aligned buttons row -->
+	<div class="btn-row" role="toolbar" aria-label="Primary links">
+	  <a class="btn-custom" href="https://arxiv.org/abs/2308.05525" target="_blank" rel="noopener" aria-label="Open arXiv paper">
+		<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/ArXiv_logo_2022.svg/512px-ArXiv_logo_2022.svg.png" alt="ArXiv logo"> ArXiv
+	  </a>
+	  <a class="btn-custom" href="https://github.com/yossilevii100/refocusing" target="_blank" rel="noopener" aria-label="Open code on GitHub">
+		<i class="fab fa-github" aria-hidden="true"></i> Code
+	  </a>
+	</div>
+
+  </div>
+</section>
+
+
+
+
+<!-- BibTeX Section -->
+<section id="bibtex" aria-label="BibTeX">
+  <div class="section-content">
+    <h2>BibTeX</h2>
+    <div style="position: relative; display: flex; flex-direction: column; max-width:600px;">
+      <pre id="bibtex-text" style="margin:0; padding-bottom:40px;">@InProceedings{Levi_2023_ICCV,
+    author    = {Levi, Meir Yossef and Gilboa, Guy},
+    title     = {EPiC: Ensemble of Partial Point Clouds for Robust Classification},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    month     = {October},
+    year      = {2023},
+    pages     = {14475-14484}
+}</pre>
+      <button class="btn-custom" id="copy-bibtex-btn"
+              style="position:absolute; bottom:0; right:0; margin:10px;">
+        Copy BibTeX
+      </button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  &copy; 2025 
+  <a href="https://yossilevii100.github.io" target="_blank" rel="noopener noreferrer">Meir Yossef Levi</a> 
+  &amp; 
+  <a href="https://guygilboa.net.technion.ac.il/" target="_blank" rel="noopener noreferrer">Guy Gilboa</a>
+</footer>
+
+  <!-- Scripts -->
+  <script>
+  const copyBtn = document.getElementById('copy-bibtex-btn');
+  const bibtexText = document.getElementById('bibtex-text');
+
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(bibtexText.innerText)
+      .then(() => {
+        copyBtn.innerText = 'Copied!';
+        setTimeout(() => { copyBtn.innerText = 'Copy BibTeX'; }, 1500);
+      })
+      .catch(() => {
+        copyBtn.innerText = 'Failed';
+        setTimeout(() => { copyBtn.innerText = 'Copy BibTeX'; }, 1500);
+      });
+  });
+</script>
+
+  <script>
+    // --- Modal image fullscreen (with ESC close + wheel zoom) ---
+    (function(){
+      const modal = document.getElementById('modal');
+      const modalImg = document.getElementById('modal-img');
+      const teaser = document.getElementById('abstract-teaser');
+      const closeBtn = document.getElementById('modal-close');
+      let scale = 1;
+
+      function openModal(src, alt) {
+        modalImg.src = src;
+        modalImg.alt = alt || '';
+        scale = 1;
+        modalImg.style.transform = 'scale(1)';
+        modal.style.display = 'block';
+        modal.setAttribute('aria-hidden', 'false');
+        // focus for accessibility
+        closeBtn.focus();
+      }
+      function closeModal() {
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden', 'true');
+        modalImg.src = '';
+      }
+
+      teaser.addEventListener('click', () => openModal(teaser.src, teaser.alt));
+      closeBtn.addEventListener('click', closeModal);
+
+      // Close on ESC
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
+      });
+
+      // Close when clicking on backdrop (but not when clicking the image itself)
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      // Wheel zoom on modal image (desktop)
+      modalImg.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = -e.deltaY;
+        if (delta > 0) scale = Math.min(3, scale + 0.1);
+        else scale = Math.max(0.6, scale - 0.1);
+        modalImg.style.transform = 'scale(' + scale + ')';
+      }, { passive: false });
+    })();
+
+    // --- Hero video autoplay once per visible entry (IntersectionObserver) --- 
+	(function() {
+	  const video = document.getElementById('hero-video');
+	  if (!video) return;
+
+	  let playedThisView = false;
+
+	  // Try to play, handling autoplay restrictions
+	  function tryPlay() {
+		try { video.currentTime = 0; } catch(e) {}
+		const p = video.play();
+		if (p && typeof p.then === 'function') {
+		  p.catch(() => {
+			console.log("Autoplay blocked by browser");
+		  });
+		}
+	  }
+
+	  // Intersection observer to play once when 70% visible
+	  const observer = new IntersectionObserver((entries) => {
+		entries.forEach(entry => {
+		  if (entry.target !== video) return;
+
+		  if (entry.isIntersecting && entry.intersectionRatio >= 0.7) {
+			if (!playedThisView) {
+			  tryPlay();
+			  playedThisView = true; // only play once while visible
+			}
+		  } else {
+			// reset when video leaves view
+			playedThisView = false;
+		  }
+		});
+	  }, { threshold: [0, 0.4, 0.7, 0.9] });
+
+	  observer.observe(video);
+	})();
+
+    // --- Optional: smooth scroll for nav links ---
+    (function(){
+      const navLinks = document.querySelectorAll('.topnav a[href^="#"]');
+      navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const id = link.getAttribute('href').slice(1);
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
